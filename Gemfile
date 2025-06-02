@@ -19,9 +19,18 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "solid_cache"
 gem "solid_queue"
 gem "solid_cable"
-
+gem "devise"
+gem "devise-jwt"
+gem 'jsonapi-serializer'
+gem "rack-cors"
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
+gem 'u-case', '~> 4.5.1'
+gem 'pry', '~> 0.15.0'
+gem 'blueprinter'
+gem 'has_scope'
+gem 'rack-cors'
+
 
 # Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
 gem "kamal", require: false
@@ -41,7 +50,14 @@ group :development, :test do
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
-
+  gem 'rspec-rails', '~> 6.0'
+  gem 'factory_bot_rails', '~> 6.0'
+  gem 'shoulda-matchers'
+  gem "rubocop-rails-omakase"
+  gem 'rswag-specs'
+  gem 'rswag-api'
+  gem 'rswag-ui'
+  gem 'faker', '~> 3.0'
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 end
