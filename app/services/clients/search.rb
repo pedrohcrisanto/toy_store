@@ -1,26 +1,17 @@
 module Clients
   class Search < Micro::Case
-    attributes :query
+    attributes :query, :collection
 
     def call!
       Success result: { data: search }
-
     rescue => e
-      Failure result: { message: "Não foi possivel buscar!", error: e.message }
+      Failure result: { message: "Não foi possivel buscar!", error: e.inspect }
     end
 
     private
 
-    def by_name
-      @clients&.where("name LIKE ?", "%#{q}%")
-    end
-
     def search
-      by_name if query.present?
-    end
-
-    def clients
-      @clients  = ::Clients::Repository.call!
+      collection&.where("name LIKE ? OR email LIKE ?", "%#{query}%", "%#{query}%")
     end
   end
 end
