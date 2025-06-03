@@ -5,7 +5,7 @@ class ::Clients::Destroy < Micro::Case
     Success result: { data: find_client, message: "Cliente removido com sucesso!" }
 
   rescue => e
-    Failure result: { message: "Não foi possível remover o cliente!", error: e.message }
+    Failure result: { message: "Não foi possível remover o cliente!", error: e.inspect }
   end
 
   private

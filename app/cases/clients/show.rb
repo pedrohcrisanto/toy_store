@@ -4,7 +4,7 @@ class ::Clients::Show < Micro::Case
   def call!
     Success result: { data: find_client, message: "Cliente encontrado com sucesso!" }
   rescue => e
-    Failure result: { message: "Não foi possível encontrar o cliente!", error: e.message }
+    Failure result: { message: "Não foi possível encontrar o cliente!", error: e.inspect }
   end
 
   private

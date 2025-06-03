@@ -11,7 +11,7 @@ class Api::V1::ClientsController < ApplicationController
                      message: result.message,
                      meta: pagination }, status: :ok
     else
-      render json: { message: result.message }
+      render json: { message: result.message, error: result.error }
     end
   end
 
@@ -24,7 +24,7 @@ class Api::V1::ClientsController < ApplicationController
                      message: result.message,
                      meta: pagination }, status: :ok
     else
-      render json: { message: result.message }
+      render json: { message: result.message, error: result.error }
     end
   end
 
@@ -37,7 +37,7 @@ class Api::V1::ClientsController < ApplicationController
                      message: result.message,
                      meta: pagination }, status: :ok
     else
-      render json: { message: result.message }
+      render json: { message: result.message, error: result.error }
     end
   end
 
@@ -51,7 +51,7 @@ class Api::V1::ClientsController < ApplicationController
                      message: result.message,
                      meta: pagination }, status: :ok
     else
-      render json: { message: result.message }
+      render json: { message: result.message, error: result.error }
     end
   end
 
@@ -64,7 +64,7 @@ class Api::V1::ClientsController < ApplicationController
                      message: result.message,
                      meta: pagination }, status: :ok
     else
-      render json: { message: result.message }
+      render json: { message: result.message, error: result.error }
     end
   end
 

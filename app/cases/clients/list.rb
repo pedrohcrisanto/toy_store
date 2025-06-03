@@ -6,7 +6,7 @@ module Clients
       Success result: { data: collection, message: "Listado com Sucesso!" }
 
     rescue => e
-      Failure result: { message: "Não foi possivel listar!", error: e.message }
+      Failure result: { message: "Não foi possivel listar!", error: e.inspect }
     end
 
     private
