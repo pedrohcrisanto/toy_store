@@ -57,12 +57,26 @@ RSpec.configure do |config|
   # The different available types are documented in the features, such as in
   # https://rspec.info/features/6-0/rspec-rails
   config.infer_spec_type_from_file_location!
-  RSpec.configure do |config|
-    config.include FactoryBot::Syntax::Methods
-    # ...
-  end
   # Filter lines from Rails gems in backtraces.
   config.filter_rails_from_backtrace!
+
+
+  Shoulda::Matchers.configure do |config|
+    config.integrate do |with|
+      with.test_framework :rspec
+      with.library :rails
+    end
+  end
+  include Warden::Test::Helpers
+
+  def sign_in(user)
+    login_as(user, scope: :user)
+  end
+
+  def sign_out
+    logout(:user)
+  end
+  config.include FactoryBot::Syntax::Methods
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 end

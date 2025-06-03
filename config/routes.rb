@@ -1,18 +1,17 @@
 # config/routes.rb
 
 Rails.application.routes.draw do
-  devise_for :users,
-             path: '',
-             path_names: {
-               sign_in: 'login',
-               sign_out: 'logout',
-               registration: 'signup'
-             },
+  mount Rswag::Ui::Engine => '/api-docs'
+  mount Rswag::Api::Engine => '/api-docs'
+  devise_for :users, path: '', path_names: {
+    sign_in: 'login',
+    sign_out: 'logout',
+    registration: 'signup'
+  },
              controllers: {
-               sessions: 'users/sessions',       # Controlador para login/logout
-               registrations: 'users/registrations' # Controlador para registro
+               sessions: 'users/sessions',
+               registrations: 'users/registrations'
              }
-
   # Exemplo de rota protegida que exigirá autenticação JWT
   # namespace :api do
   #   namespace :v1 do

@@ -311,25 +311,16 @@ Devise.setup do |config|
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
   # JWT
+  config.skip_session_storage = [:http_auth]
+
   config.jwt do |jwt|
-    jwt.secret = ENV['DEVISE_JWT_SECRET_KEY'] || Rails.application.credentials.secret_key_base
-    # ou, para facilitar o desenvolvimento, mas NÃO para produção:
-    # jwt.secret = ENV['DEVISE_JWT_SECRET_KEY'] || 'sua_chave_secreta_muito_segura_aqui'
-
-    # Define quais requisições DEVEM disparar a geração de um novo token JWT
-    # Geralmente, é o endpoint de login (sign_in)
+    jwt.secret = Rails.application.credentials.devise_jwt_secret_key!
     jwt.dispatch_requests = [
-      ['POST', %r{^/login$}] # Exemplo: para um endpoint de login em /login
+      ['POST', %r{^/login$}]
     ]
-
-    # Define quais requisições DEVEM invalidar o token JWT (logout)
-    # Geralmente, é o endpoint de logout (sign_out)
     jwt.revocation_requests = [
-      ['DELETE', %r{^/logout$}] # Exemplo: para um endpoint de logout em /logout
+      ['DELETE', %r{^/logout$}]
     ]
-
-    # Tempo de expiração do token JWT (em segundos)
-    # 30.minutes.to_i = 1800 segundos
-    jwt.expiration_time = 30.minutes.to_i
+    jwt.expiration_time = 1.day.to_i
   end
 end
