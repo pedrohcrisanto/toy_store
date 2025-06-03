@@ -1,29 +1,40 @@
-# app/controllers/users.rb/sessions_controller.rb
-
 class Users::SessionsController < Devise::SessionsController
-  respond_to :json # Responda em JSON
+  respond_to :json
 
   private
 
-  def respond_with(resource, _opts = {})
+  def respond_with(resource, _opt = {})
+    @token = request.env['warden-jwt_auth.token']
+    headers['Authorization'] = @token
+
     render json: {
-      status: { code: 200, message: 'Logado com sucesso.' },
-      data: UserSerializer.new(resource).serializable_hash[:data][:attributes] # Use um serializador para retornar os dados do usuário
+      status: {
+        code: 200, message: 'Logged in successfully.',
+        token: @token,
+        data: {
+          user: UserSerializer.new(resource).serializable_hash[:data][:attributes]
+        }
+      }
     }, status: :ok
   end
 
   def respond_to_on_destroy
-    jwt_payload = JWT.decode(request.headers['Authorization'].split(' ')[1],
-                             Rails.application.credentials.secret_key_base).first
-    current_user = User.find(jwt_payload['sub'])
+    if request.headers['Authorization'].present?
+      jwt_payload = JWT.decode(request.headers['Authorization'].split.last,
+                               Rails.application.credentials.devise_jwt_secret_key!).first
+
+      current_user = User.find(jwt_payload['sub'])
+    end
 
     if current_user
       render json: {
-        status: { code: 200, message: 'Deslogado com sucesso.' }
+        status: 200,
+        message: 'Logged out successfully.'
       }, status: :ok
     else
       render json: {
-        status: { code: 401, message: 'Não foi possível deslogar.' }
+        status: 401,
+        message: "Couldn't find an active session."
       }, status: :unauthorized
     end
   end

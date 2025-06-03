@@ -1,17 +1,18 @@
 # app/controllers/api/v1/clients_controller.rb
-class Api::V1::ClientsController < ApplicationController
+class Api::V1::ClientsController < Api::V1::BaseController
   before_action :authenticate_user!
 
   # GET /api/v1/clients
   def index
-    result = Clients::List.call(q: q)
+    result = Clients::List.call(q: params[:q])
+    @pagy, @clients = pagy(result.data[:clients])
 
     if result.success?
-      render json: { data: result.data[:clients],
+      render json: { data: serializer(@clients),
                      message: result.data[:message],
-                     meta: pagination }, status: :ok
+                     meta: @pagy,}, status: :ok
     else
-      render json: { message: result.message, error: result.error }
+      render json: { message: result.data[:message], error: result.data[:error] }
     end
   end
 
@@ -21,10 +22,9 @@ class Api::V1::ClientsController < ApplicationController
 
     if result.success?
       render json: { data: result.data[:client],
-                     message: result.message,
-                     meta: pagination }, status: :ok
+                     message: result.data[:message]}, status: :ok
     else
-      render json: { message: result.message, error: result.error }
+      render json: { message: result.data[:message], error: result.data[:error] }, status: :not_found
     end
   end
 
@@ -34,10 +34,9 @@ class Api::V1::ClientsController < ApplicationController
 
     if result.success?
       render json: { data: result.data[:client],
-                     message: result.message,
-                     meta: pagination }, status: :ok
+                     message: result.data[:message]}, status: :created
     else
-      render json: { message: result.message, error: result.error }
+      render json: { message: result.data[:message], error: result.data[:error] }
     end
   end
 
@@ -48,10 +47,9 @@ class Api::V1::ClientsController < ApplicationController
 
     if result.success?
       render json: { data: result.data[:client],
-                     message: result.message,
-                     meta: pagination }, status: :ok
+                     message: result.data[:message]}, status: :ok
     else
-      render json: { message: result.message, error: result.error }
+      render json: { message: result.data[:message], error: result.data[:error] }
     end
   end
 
@@ -61,19 +59,19 @@ class Api::V1::ClientsController < ApplicationController
 
     if result.success?
       render json: { data: result.data[:client],
-                     message: result.message,
-                     meta: pagination }, status: :ok
+                     message: result.data[:message]}, status: :ok
     else
-      render json: { message: result.message, error: result.error }
+      render json: { message: result.data[:message], error: result.data[:error] }, status: :not_found
     end
   end
 
   private
 
   def client_params
-    params.require(:client).permit(:name, :email, :date_of_birth, :q)
+    params.require(:client).permit(:name, :email, :date_of_birth)
   end
 
-  def pagination
+  def serializer(collection)
+    ClientsSerializer.new(collection).serializable_hash.to_json
   end
 end

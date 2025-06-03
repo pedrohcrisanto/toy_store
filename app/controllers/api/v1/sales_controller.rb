@@ -1,6 +1,6 @@
 # app/controllers/api/v1/sales_controller.rb
-class Api::V1::SalesController < ApplicationController
-  # POST /api/v1/sales
+class Api::V1::SalesController < Api::V1::BaseController
+# POST /api/v1/sales
   def create
     sale = Sale.new(sale_params)
 

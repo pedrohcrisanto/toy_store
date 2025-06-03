@@ -1,6 +1,6 @@
 # app/controllers/api/v1/statistics_controller.rb
-class Api::V1::StatisticsController < ApplicationController
-  # GET /api/v1/statistics/sales_by_day
+class Api::V1::StatisticsController < Api::V1::BaseController
+# GET /api/v1/statistics/sales_by_day
   def sales_by_day
     sales_data = Sale.group(:sale_date).sum(:value)
     formatted_data = sales_data.map do |date, total_value|
