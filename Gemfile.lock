@@ -208,6 +208,7 @@ GEM
       racc (~> 1.4)
     orm_adapter (0.5.0)
     ostruct (0.6.1)
+    pagy (9.3.4)
     parallel (1.27.0)
     parser (3.3.8.0)
       ast (~> 2.4.1)
@@ -415,6 +416,7 @@ DEPENDENCIES
   has_scope
   jsonapi-serializer
   kamal
+  pagy
   pg (~> 1.1)
   pry (~> 0.15.0)
   puma (>= 5.0)
@@ -424,6 +426,7 @@ DEPENDENCIES
   rswag-api
   rswag-specs
   rswag-ui
+  rubocop
   rubocop-rails-omakase
   shoulda-matchers
   solid_cable
