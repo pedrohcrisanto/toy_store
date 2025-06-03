@@ -4,11 +4,11 @@ class Api::V1::ClientsController < ApplicationController
 
   # GET /api/v1/clients
   def index
-    result = Clients::List.call(search: search)
+    result = Clients::List.call(q: q)
 
     if result.success?
-      render json: { data: result.data,
-                     message: result.message,
+      render json: { data: result.data[:clients],
+                     message: result.data[:message],
                      meta: pagination }, status: :ok
     else
       render json: { message: result.message, error: result.error }
@@ -71,7 +71,7 @@ class Api::V1::ClientsController < ApplicationController
   private
 
   def client_params
-    params.require(:client).permit(:name, :email, :date_of_birth, :search)
+    params.require(:client).permit(:name, :email, :date_of_birth, :q)
   end
 
   def pagination

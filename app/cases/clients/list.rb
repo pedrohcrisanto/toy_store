@@ -1,27 +1,27 @@
 module Clients
-  class ListCase < Micro::Case
+  class List < Micro::Case
     attributes :q
 
     def call!
-      Success result: { data: list_clients, message: "Listado com Sucesso!" }
+      Success result: { clients: list_clients, message: "Listado com Sucesso!" }
     rescue => e
       Failure result: { message: "Não foi possivel listar!", error: e.inspect }
     end
 
     private
 
-    def collection
-      ::Clients::Repository.call
+    def clients
+      @clients ||= Client.all
     end
 
     def list_clients
-      return collection if q.blank?
+      return clients if q.blank?
 
       search
     end
 
     def search
-      ::Clients::Search.call(query: q, collection: collection).result.data
+      clients&.where("name LIKE ? OR email LIKE ?", "%#{q}%", "%#{q}%")
     end
   end
 end
