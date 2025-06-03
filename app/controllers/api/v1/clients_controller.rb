@@ -20,7 +20,7 @@ class Api::V1::ClientsController < ApplicationController
     result = Clients::Show.call(id: params[:id])
 
     if result.success?
-      render json: { data: result.data,
+      render json: { data: result.data[:client],
                      message: result.message,
                      meta: pagination }, status: :ok
     else
@@ -33,7 +33,7 @@ class Api::V1::ClientsController < ApplicationController
     result = Clients::Create.call(params: client_params)
 
     if result.success?
-      render json: { data: result.data,
+      render json: { data: result.data[:client],
                      message: result.message,
                      meta: pagination }, status: :ok
     else
@@ -47,7 +47,7 @@ class Api::V1::ClientsController < ApplicationController
                                   id: params[:id])
 
     if result.success?
-      render json: { data: result.data,
+      render json: { data: result.data[:client],
                      message: result.message,
                      meta: pagination }, status: :ok
     else
@@ -60,7 +60,7 @@ class Api::V1::ClientsController < ApplicationController
     result = Clients::Destroy.call(id: params[:id])
 
     if result.success?
-      render json: { data: result.data,
+      render json: { data: result.data[:client],
                      message: result.message,
                      meta: pagination }, status: :ok
     else

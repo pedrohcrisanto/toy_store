@@ -2,7 +2,7 @@ class ::Clients::Destroy < Micro::Case
   attributes :id
 
   def call!
-    Success result: { data: find_client, message: "Cliente removido com sucesso!" }
+    Success result: { client: find_client, message: "Cliente removido com sucesso!" }
 
   rescue => e
     Failure result: { message: "Não foi possível remover o cliente!", error: e.inspect }

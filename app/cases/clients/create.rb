@@ -4,7 +4,7 @@ class ::Clients::Create < Micro::Case
   def call!
     client = create_client
 
-    Success result: { data: client, message: "Cliente criado com sucesso!" }
+    Success result: { client: client, message: "Cliente criado com sucesso!" }
 
   rescue => e
     Failure result: { message: "Não foi possível criar o cliente!", error: e.inspect }
