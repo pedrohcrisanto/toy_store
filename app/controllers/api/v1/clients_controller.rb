@@ -1,6 +1,6 @@
 # app/controllers/api/v1/clients_controller.rb
 class ::Api::V1::ClientsController < ::Api::V1::BaseController
-  # before_action :authenticate_user!
+  before_action :authenticate_user!
 
   # GET /api/v1/clients
   def index
@@ -8,7 +8,7 @@ class ::Api::V1::ClientsController < ::Api::V1::BaseController
     @pagy, @clients = pagy(result.data[:clients])
 
     if result.success?
-      render json: { clients: blueprint(@clients),
+      render json: { data: blueprint(@clients),
                      message: result.data[:message],
                      meta: @pagy }, status: :ok
     else
