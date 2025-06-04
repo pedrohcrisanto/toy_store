@@ -5,11 +5,11 @@ class Api::V1::StatisticsController < Api::V1::BaseController
 
   def index
     result = ::Statistics::List.call
-
+    
     if result.success?
-      render json: { data: blueprint(result.data), message: result.message }, status: :ok
+      render json: { data: blueprint(result.data), message: result.data[:message] }, status: :ok
     else
-      render json: { message: result.message, error: result.error }, status: :unprocessable_entity
+      render json: { message: result.data[:message] , error: result.data[:error]  }, status: :unprocessable_entity
     end
   end
 

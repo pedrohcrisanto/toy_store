@@ -1,12 +1,9 @@
-# config/initializers/cors.rb
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins 'http://localhost:3000'
-    resource(
-      '*',
-      headers: :any,
-      expose: ['access-token', 'expiry', 'token-type', 'Authorization'],
-      methods: [:get, :patch, :put, :delete, :post, :options, :show]
-    )
+    origins "*" # later change to the domain of the frontend app
+
+    resource "*",
+             headers: :any,
+             methods: [:get, :post, :put, :patch, :delete, :options, :head]
   end
 end

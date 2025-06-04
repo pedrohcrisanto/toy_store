@@ -12,15 +12,7 @@ Rails.application.routes.draw do
                sessions: 'users/sessions',
                registrations: 'users/registrations'
              }
-  # Exemplo de rota protegida que exigirá autenticação JWT
-  # namespace :api do
-  #   namespace :v1 do
-  #     resources :articles, only: [:index, :show, :create, :update, :destroy] do
-  #       # Exemplo de como proteger uma rota dentro de resources
-  #       before_action :authenticate_user!, only: [:create, :update, :destroy]
-  #     end
-  #   end
-  # end
+
   namespace :api do
     namespace :v1 do
       # Rota de autenticação
@@ -31,8 +23,7 @@ Rails.application.routes.draw do
       resources :sales, only: [:create]
 
       # Rotas de estatísticas
-      get '/statistics/sales_by_day', to: 'statistics#sales_by_day'
-      get '/statistics/top_clients', to: 'statistics#top_clients'
+      get '/statistics', to: 'statistics#index'
     end
   end
 end
