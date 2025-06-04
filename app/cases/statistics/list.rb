@@ -41,7 +41,7 @@ class ::Statistics::List < Micro::Case
     Rails.cache.fetch(TOP_VOLUME_CLIENT, expires_in: 1.hour) do
       Client.joins(:sales)
             .group('clients.id')
-            .order('SUM(sales.value) DESC')
+            .order(Arel.sql('SUM(sales.value) DESC')) # CORRIGIDO PARA RAILS 8+
             .select('clients.*, SUM(sales.value) as total_volume')
             .first
     end
@@ -51,9 +51,10 @@ class ::Statistics::List < Micro::Case
     Rails.cache.fetch(TOP_AVERAGE_CLIENT, expires_in: 1.hour) do
       Client.joins(:sales)
             .group('clients.id')
-            .order('AVG(sales.value) DESC')
+            .order(Arel.sql('AVG(sales.value) DESC'))
             .select('clients.*, AVG(sales.value) as average_value')
             .first
+            .explain
     end
   end
 
