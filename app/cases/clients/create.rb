@@ -14,7 +14,5 @@ class ::Clients::Create < Micro::Case
 
   def create_client
     Client.create!(params)
-  rescue => e
-    raise e
   end
 end
