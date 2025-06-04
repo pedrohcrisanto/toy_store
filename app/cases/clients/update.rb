@@ -2,7 +2,7 @@ class ::Clients::Update < Micro::Case
   attributes :id, :params
 
   def call!
-    Success result: { client: client, message: "Cliente atualizado com sucesso!" }
+    Success result: { client: update_client, message: "Cliente atualizado com sucesso!" }
   rescue => e
     Failure result: { message: "Não foi possível atualizar o cliente!", error: e.inspect }
   end
@@ -11,9 +11,11 @@ class ::Clients::Update < Micro::Case
 
   def update_client
     client.update!(params)
+
+    client
   end
 
   def client
-    @client ||= Client.find(id)
+    Client.find(id)
   end
 end
