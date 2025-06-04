@@ -1,6 +1,6 @@
 # app/controllers/api/v1/clients_controller.rb
 class Api::V1::ClientsController < Api::V1::BaseController
-  before_action :authenticate_user!
+  # before_action :authenticate_user!
 
   # GET /api/v1/clients
   def index
@@ -8,9 +8,9 @@ class Api::V1::ClientsController < Api::V1::BaseController
     @pagy, @clients = pagy(result.data[:clients])
 
     if result.success?
-      render json: { data: serializer(@clients),
+      render json: { clients: blueprint(@clients),
                      message: result.data[:message],
-                     meta: @pagy,}, status: :ok
+                     meta: @pagy }, status: :ok
     else
       render json: { message: result.data[:message], error: result.data[:error] }
     end
@@ -21,7 +21,7 @@ class Api::V1::ClientsController < Api::V1::BaseController
     result = Clients::Show.call(id: params[:id])
 
     if result.success?
-      render json: { data: result.data[:client],
+      render json: { data: blueprint(result.data[:client]),
                      message: result.data[:message]}, status: :ok
     else
       render json: { message: result.data[:message], error: result.data[:error] }, status: :not_found
@@ -33,7 +33,7 @@ class Api::V1::ClientsController < Api::V1::BaseController
     result = Clients::Create.call(params: client_params)
 
     if result.success?
-      render json: { data: result.data[:client],
+      render json: { data: blueprint(result.data[:client]),
                      message: result.data[:message]}, status: :created
     else
       render json: { message: result.data[:message], error: result.data[:error] }
@@ -46,7 +46,7 @@ class Api::V1::ClientsController < Api::V1::BaseController
                                   id: params[:id])
 
     if result.success?
-      render json: { data: result.data[:client],
+      render json: { data: blueprint(result.data[:client]),
                      message: result.data[:message]}, status: :ok
     else
       render json: { message: result.data[:message], error: result.data[:error] }
@@ -58,7 +58,7 @@ class Api::V1::ClientsController < Api::V1::BaseController
     result = Clients::Destroy.call(id: params[:id])
 
     if result.success?
-      render json: { data: result.data[:client],
+      render json: { data: blueprint(result.data[:client]),
                      message: result.data[:message]}, status: :ok
     else
       render json: { message: result.data[:message], error: result.data[:error] }, status: :not_found
@@ -71,7 +71,7 @@ class Api::V1::ClientsController < Api::V1::BaseController
     params.require(:client).permit(:name, :email, :date_of_birth)
   end
 
-  def serializer(collection)
-    ClientsSerializer.new(collection).serializable_hash.to_json
+  def blueprint(collection)
+    ClientsBlueprint.render_as_json(collection)
   end
 end

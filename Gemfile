@@ -33,6 +33,7 @@ gem 'pagy'
 gem 'rswag-api'
 gem 'rswag-ui'
 
+
 # Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
 gem "kamal", require: false
 
