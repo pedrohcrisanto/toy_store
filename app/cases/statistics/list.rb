@@ -54,7 +54,6 @@ class ::Statistics::List < Micro::Case
             .order(Arel.sql('AVG(sales.value) DESC'))
             .select('clients.*, AVG(sales.value) as average_value')
             .first
-            .explain
     end
   end
 
