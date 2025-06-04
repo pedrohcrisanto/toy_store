@@ -1,0 +1,101 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/v1/clients":
+    get:
+      summary: List all clients
+      tags:
+      - Clients
+      security:
+      - cookie: []
+      responses:
+        '200':
+          description: contacts found
+    post:
+      summary: Create a client
+      tags:
+      - Clients
+      security:
+      - cookie: []
+      parameters: []
+      responses:
+        '201':
+          description: client created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                date_of_birth:
+                  type: date
+              required:
+              - name
+              - email
+  "/api/v1/clients/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Client ID
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Show a client
+      tags:
+      - Clients
+      security:
+      - cookie: []
+      responses:
+        '200':
+          description: client found
+        '404':
+          description: client not found
+    patch:
+      summary: Update a client
+      tags:
+      - Clients
+      security:
+      - cookie: []
+      parameters: []
+      responses:
+        '200':
+          description: client updated
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                date_of_birth:
+                  type: date
+              required:
+              - name
+              - email
+    delete:
+      summary: Delete a client
+      tags:
+      - Clients
+      security:
+      - cookie: []
+      responses:
+        '200':
+          description: client deleted
+        '404':
+          description: client not found
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com
