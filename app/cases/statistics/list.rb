@@ -28,46 +28,34 @@ class ::Statistics::List < Micro::Case
 
   # GET /api/v1/statistics/top_clients
   def top_clients
-    # Cliente com maior volume de vendas
-    top_volume_client = Client.includes(:sales).joins(:sales)
-                              .group('clients.id')
-                              .order('SUM(sales.value) DESC')
-                              .select('clients.*, SUM(sales.value) as total_volume')
-                              .first
-
-    # Cliente com maior média de valor por venda
-    top_average_client = Client.includes(:sales).joins(:sales)
-                               .group('clients.id')
-                               .order('AVG(sales.value) DESC')
-                               .select('clients.*, AVG(sales.value) as average_value')
-                               .first
-
-    # Cliente com maior número de dias únicos com vendas registradas (frequência de compra)
-    top_frequency_client = Client.includes(:sales).joins(:sales)
-                                 .group('clients.id')
-                                 .order('COUNT(DISTINCT sales.sale_date) DESC')
-                                 .select('clients.*, COUNT(DISTINCT sales.sale_date) as unique_days')
-                                 .first
-
     {
-      top_volume_client: top_volume_client ? {
-        id: top_volume_client.id,
-        name: top_volume_client.name,
-        email: top_volume_client.email,
-        total_volume: top_volume_client.total_volume.to_f
-      } : nil,
-      top_average_client: top_average_client ? {
-        id: top_average_client.id,
-        name: top_average_client.name,
-        email: top_average_client.email,
-        average_value: top_average_client.average_value.to_f
-      } : nil,
-      top_frequency_client: top_frequency_client ? {
-        id: top_frequency_client.id,
-        name: top_frequency_client.name,
-        email: top_frequency_client.email,
-        unique_days: top_frequency_client.unique_days.to_i
-      } : nil
+      top_volume_client: top_volume_client,
+      top_average_client: top_average_client,
+      top_frequency_client: top_frequency_client
     }
+  end
+
+  def top_volume_client
+    clients.group('clients.id')
+           .order('SUM(sales.value) DESC')
+           .select('clients.*, SUM(sales.value) as total_volume')
+           .first
+  end
+
+  def top_average_client
+    clients.order('AVG(sales.value) DESC')
+           .select('clients.*, AVG(sales.value) as average_value')
+           .first
+
+  end
+
+  def top_frequency_client
+    clients.order('COUNT(DISTINCT sales.sale_date) DESC')
+           .select('clients.*, COUNT(DISTINCT sales.sale_date) as unique_days')
+           .first
+  end
+
+  def clients
+    @clients ||= Client.includes(:sales).joins(:sales)
   end
 end
