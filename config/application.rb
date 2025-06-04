@@ -10,7 +10,14 @@ module ToyStore
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
-
+    config.cache_store = :solid_cache, {
+      # Opcional: nome da tabela de cache, padrão é 'solid_cache_entries'
+      # table_name: 'my_app_cache_entries',
+      # Opcional: para usar um banco de dados separado para o cache
+      # database: { writing: :solid_cache_writing, reading: :solid_cache_reading },
+      # Opcional: tamanho máximo para o valor do cache (em bytes), padrão é 64KB
+      # max_value_bytes: 1.megabyte
+    }
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.

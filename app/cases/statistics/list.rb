@@ -1,4 +1,6 @@
 class ::Statistics::List < Micro::Case
+  CACHE_KEY = "statistics:data"
+
   def call!
     Success result: { data: data, message: "Estatísticas geradas com sucesso!" }
   rescue => e
@@ -8,10 +10,12 @@ class ::Statistics::List < Micro::Case
   private
 
   def data
-    {
-      sales_by_day: sales_by_day,
-      top_clients: top_clients
-    }
+    Rails.cache.fetch(CACHE_KEY, expires_in: 1.hour) do
+      {
+        sales_by_day: sales_by_day,
+        top_clients: top_clients
+      }
+    end
   end
 
   def sales_by_day
