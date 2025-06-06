@@ -1,25 +1,27 @@
-require 'rails_helper'
+require 'swagger_helper'
 
-RSpec.describe "Api::V1::Statistics", type: :request do
-  describe "GET /index" do
-    it "returns http success" do
-      get "/api/v1/statistics/index"
-      expect(response).to have_http_status(:success)
-    end
+RSpec.describe 'Api::V1::Statistics', type: :request do
+  let(:user) { create :user }
+  let!(:client) { create :client }
+  let!(:sales) { create_list(:sale, 3, client: client) }
+
+
+  before do
+    sign_in(user)
   end
 
-  describe "GET /sales_by_day" do
-    it "returns http success" do
-      get "/api/v1/statistics/sales_by_day"
-      expect(response).to have_http_status(:success)
+  path '/api/v1/statistics' do
+    get 'List statistics' do
+      tags 'Statistics'
+      produces 'application/json'
+
+      response '200', 'Statistics retrieved successfully' do
+        run_test! do |response|
+          data = JSON.parse(response.body, symbolize_names: true)
+          expect(data[:message]).to eq('Estatísticas geradas com sucesso!')
+          expect(data[:data][:sales_by_day]).to be_an(Array)
+        end
+      end
     end
   end
-
-  describe "GET /top_clients" do
-    it "returns http success" do
-      get "/api/v1/statistics/top_clients"
-      expect(response).to have_http_status(:success)
-    end
-  end
-
 end

@@ -22,12 +22,25 @@ RSpec.configure do |config|
         version: 'v1'
       },
       paths: {},
+      components: {
+        securitySchemes: {
+          basic_auth: {
+            type: :http,
+            scheme: :basic
+          },
+          api_key: {
+            type: :apiKey,
+            name: 'Authorization',
+            in: :header
+          }
+        }
+      },
       servers: [
         {
-          url: 'https://{defaultHost}',
+          url: 'http://{defaultHost}',
           variables: {
             defaultHost: {
-              default: 'www.example.com'
+              default: 'localhost:3000'
             }
           }
         }
