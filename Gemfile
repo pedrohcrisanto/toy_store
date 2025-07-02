@@ -57,7 +57,7 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem "rubocop-rails-omakase"
   gem 'rswag-specs'
-  gem 'faker', '~> 3.0'
+  gem 'faker', '~> 3.5'
   gem 'rubocop', require: false
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
